@@ -1,21 +1,9 @@
 import { Authenticator } from "remix-auth";
 import { sessionStorage } from "./sessions.server";
 import { FormStrategy } from "remix-auth-form";
-import jwtDecode from "jwt-decode";
+import { User } from "~/utils/types";
+import { decode } from "~/utils/helpers";
 import { login } from "~/models/user.server";
-
-type User = {
-  token: string;
-  userId: string;
-};
-
-function decode(token: string) {
-  try {
-    return jwtDecode(token);
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 const authenticator = new Authenticator<User | Error | null>(sessionStorage);
 

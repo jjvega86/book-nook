@@ -1,4 +1,3 @@
-// TODO: Add logout and registration functions
 // TODO: Add navbar with conditional login/register/logout button
 // TODO: Finish writing form with validations and error handling that redirects
 
