@@ -1,4 +1,3 @@
-import { redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import authenticator from "~/services/auth.server";
