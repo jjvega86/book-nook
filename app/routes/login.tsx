@@ -4,18 +4,22 @@ import authenticator from "~/services/auth.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   return await authenticator.isAuthenticated(request, {
-    successRedirect: "/",
+    successRedirect: "/books",
   });
 };
 
 export const action = async ({ request }: ActionArgs) => {
+  // TODO: Validate form inputs
+
   return await authenticator.authenticate("form", request, {
-    successRedirect: "/",
+    successRedirect: "/books",
     failureRedirect: "/login",
   });
 };
 
 const Login = () => {
+  // TODO: Add error messages
+  // TODO: Finish styling
   return (
     <Form method="post">
       <input type="email" name="email" required />

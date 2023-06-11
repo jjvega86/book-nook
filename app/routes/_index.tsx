@@ -1,9 +1,6 @@
-import { V2_MetaFunction, json, redirect } from "@remix-run/node";
-import type { LoaderArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 import authenticator from "~/services/auth.server";
-
-import NavBar from "~/components/NavBar";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -13,24 +10,27 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const loader = async ({ request }: LoaderArgs) => {
-  let user = await authenticator.isAuthenticated(request);
+  await authenticator.isAuthenticated(request, {
+    successRedirect: "/books",
+  });
 
-  if (!user) {
-    return redirect("/login");
-  }
-  return json(user);
+  return null;
 };
 
 export default function Index() {
-  const user = useLoaderData();
+  // TODO: Finish styling
+  // TODO: Link to Books features that don't require login
   return (
     <div>
-      <header>
-        <NavBar />
-      </header>
       <main>
-        <h1>Welcome to Remix</h1>
-        <pre>userId: {user?.userId}</pre>
+        <h1>Welcome to Book Nook</h1>
+        <div className="flex flex-col gap-2 mt-2">
+          <Link to="/join">Sign up to get started!</Link>
+          <Link to="/login">
+            Already signed up?{" "}
+            <span className="text-blue-600">Login here.</span>
+          </Link>
+        </div>
       </main>
     </div>
   );
