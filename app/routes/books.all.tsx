@@ -3,6 +3,8 @@ import type { LoaderArgs } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import authenticator from "~/services/auth.server";
 
+import { AnimatePresence, motion } from "framer-motion";
+
 import NavBar from "~/components/NavBar";
 import { getBooks } from "~/services/books.server";
 
@@ -41,7 +43,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 const Books = () => {
   const { user, books, currentPage } = useLoaderData();
-  // TODO: Add pagination animation on transition
   // TODO: search for books (use the "useSubmit" hook to submit on user input, see Remix docs)
   // TODO: Calculate last page based on total items + maxResults, disable next page on last
   const pagination = {
@@ -54,14 +55,23 @@ const Books = () => {
       <header>
         <NavBar user={user} />
       </header>
-      <main>
+      <main className="mx-20">
         <p className="mb-10 text-red-600">Current Page: {currentPage}</p>
-        <div className="mb-10">
-          {books &&
-            books.map((book: Book) => (
-              <p key={book.id}>{book.volumeInfo?.title}</p>
-            ))}
-        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            className="mb-10"
+            key={currentPage}
+            initial={{ x: "-10%", opacity: 0 }}
+            animate={{ x: "0", opacity: 1 }}
+            exit={{ y: "-10%", opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {books &&
+              books.map((book: Book) => (
+                <p key={book.id}>{book.volumeInfo?.title}</p>
+              ))}
+          </motion.div>
+        </AnimatePresence>
         <div className="flex flex-row gap-4">
           {currentPage === "1" ? (
             <p>Previous Page</p>
