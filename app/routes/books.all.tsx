@@ -2,11 +2,11 @@ import { V2_MetaFunction, json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import authenticator from "~/services/auth.server";
+import { getBooks } from "~/services/books.server";
 
 import { AnimatePresence, motion } from "framer-motion";
-
+import BookCard from "~/components/BookCard";
 import NavBar from "~/components/NavBar";
-import { getBooks } from "~/services/books.server";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -19,6 +19,10 @@ export const meta: V2_MetaFunction = () => {
 type Book = {
   volumeInfo: {
     title: string;
+    authors: string[];
+    imageLinks: {
+      thumbnail: string;
+    };
   };
   id: string;
 };
@@ -44,7 +48,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 const Books = () => {
   const { user, books, currentPage } = useLoaderData();
   // TODO: search for books (use the "useSubmit" hook to submit on user input, see Remix docs)
-  // TODO: Calculate last page based on total items + maxResults, disable next page on last
   const pagination = {
     previous: currentPage === "1" ? "1" : String(Number(currentPage) - 1),
     next: String(Number(currentPage) + 1),
@@ -59,7 +62,7 @@ const Books = () => {
         <p className="mb-10 text-red-600">Current Page: {currentPage}</p>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            className="mb-10"
+            className="mb-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center"
             key={currentPage}
             initial={{ x: "-10%", opacity: 0 }}
             animate={{ x: "0", opacity: 1 }}
@@ -68,7 +71,12 @@ const Books = () => {
           >
             {books &&
               books.map((book: Book) => (
-                <p key={book.id}>{book.volumeInfo?.title}</p>
+                <BookCard
+                  key={book.id}
+                  title={book.volumeInfo.title}
+                  imageUrl={book.volumeInfo.imageLinks?.thumbnail}
+                  authors={book.volumeInfo.authors}
+                />
               ))}
           </motion.div>
         </AnimatePresence>
