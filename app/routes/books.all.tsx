@@ -1,6 +1,6 @@
 import { V2_MetaFunction, json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 
 import authenticator from "~/services/auth.server";
 import { getBooks } from "~/services/books.server";
