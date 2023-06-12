@@ -32,18 +32,23 @@ function computeStartIndex(currentPage: string, maxResults: number) {
   return startIndex;
 }
 
+function validateQuery(query: string | null) {
+  return query == null ? "harry potter" : query === "" ? "star wars" : query;
+}
+
 export const loader = async ({ request }: LoaderArgs) => {
   let user = await authenticator.isAuthenticated(request);
   const url = new URL(request.url);
   const currentPage = url.searchParams.get("page") || "1";
+
   const search = new URLSearchParams(url.search);
-  const query =
-    search.get("query") == null ? "harry potter" : search.get("query");
-  console.log({ query });
+  const query = search.get("query");
+  const validatedQuery = validateQuery(query);
+
   let maxResults = 40;
   let startIndex = computeStartIndex(currentPage, maxResults);
 
-  let { items } = await getBooks(query, startIndex, maxResults);
+  let { items } = await getBooks(validatedQuery, startIndex, maxResults);
 
   return json({ user, books: items, currentPage, query });
 };
