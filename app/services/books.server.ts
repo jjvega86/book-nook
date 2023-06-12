@@ -1,7 +1,7 @@
 // TODO: Add functions for Google Books requests
 
 export const getBooks = async (
-  searchTerm: string,
+  searchTerm: string | null = "harry potter",
   startIndex: Number,
   maxResults: Number
 ) => {
