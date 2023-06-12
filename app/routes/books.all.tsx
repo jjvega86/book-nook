@@ -9,6 +9,7 @@ import { computeStartIndex, validateQuery } from "~/utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import NavBar from "~/components/NavBar";
 import BookGrid from "~/components/BookGrid";
+import PaginationControls from "~/components/PaginationControls";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -36,13 +37,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 const Books = () => {
   const { user, books, currentPage, query } = useLoaderData();
-  // TODO: Refactor to all reusable components
-
-  const pagination = {
-    previous: currentPage === "1" ? "1" : String(Number(currentPage) - 1),
-    next: String(Number(currentPage) + 1),
-    currentPage,
-  };
 
   return (
     <div>
@@ -72,26 +66,7 @@ const Books = () => {
             <BookGrid books={books} />
           </motion.div>
         </AnimatePresence>
-        <div className="flex flex-row gap-4 justify-center mb-5">
-          {currentPage === "1" ? (
-            <p>Previous Page</p>
-          ) : (
-            <Link
-              className="hover:text-blue-600"
-              prefetch="intent"
-              to={`?page=${pagination.previous}&query=${query}`}
-            >
-              Previous Page
-            </Link>
-          )}
-          <Link
-            className="hover:text-blue-600"
-            prefetch="intent"
-            to={`?page=${pagination.next}&query=${query}`}
-          >
-            Next Page
-          </Link>
-        </div>
+        <PaginationControls currentPage={currentPage} query={query} />
       </main>
     </div>
   );
