@@ -56,7 +56,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 const Books = () => {
   const { user, books, currentPage, query } = useLoaderData();
   // TODO: search for books (useSubmit for onChange searching)
-  // TODO: Filter out books with no thumbnail image
   // TODO: Refactor to all reusable components
 
   const pagination = {
@@ -91,14 +90,19 @@ const Books = () => {
             transition={{ duration: 0.3 }}
           >
             {books &&
-              books.map((book: Book) => (
-                <BookCard
-                  key={book.id}
-                  title={book.volumeInfo.title}
-                  imageUrl={book.volumeInfo.imageLinks?.thumbnail}
-                  authors={book.volumeInfo.authors}
-                />
-              ))}
+              books
+                .filter(
+                  (book: Book) =>
+                    book.volumeInfo.imageLinks?.thumbnail !== undefined
+                )
+                .map((book: Book) => (
+                  <BookCard
+                    key={book.id}
+                    title={book.volumeInfo.title}
+                    imageUrl={book.volumeInfo.imageLinks?.thumbnail}
+                    authors={book.volumeInfo.authors}
+                  />
+                ))}
           </motion.div>
         </AnimatePresence>
         <div className="flex flex-row gap-4 justify-center mb-5">
