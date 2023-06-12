@@ -1,6 +1,11 @@
 import { Form, Link } from "@remix-run/react";
+import type { User } from "~/utils/types";
 
-const NavBar = ({ user }) => {
+type NavBarProps = {
+  user: User;
+};
+
+const NavBar = ({ user }: NavBarProps) => {
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

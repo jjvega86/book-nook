@@ -12,7 +12,7 @@ export const action = async ({ request }: ActionArgs) => {
   // TODO: Validate form inputs
 
   return await authenticator.authenticate("form", request, {
-    successRedirect: "/books",
+    successRedirect: "/books/all",
     failureRedirect: "/login",
   });
 };

@@ -1,12 +1,14 @@
 import { V2_MetaFunction, json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
+
 import authenticator from "~/services/auth.server";
 import { getBooks } from "~/services/books.server";
+import { computeStartIndex, validateQuery } from "~/utils/helpers";
 
 import { AnimatePresence, motion } from "framer-motion";
-import BookCard from "~/components/BookCard";
 import NavBar from "~/components/NavBar";
+import BookGrid from "~/components/BookGrid";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -14,27 +16,6 @@ export const meta: V2_MetaFunction = () => {
     { name: "description", content: "The destination for all things book." },
   ];
 };
-
-// TODO: Move types + helpers to utils files once built
-type Book = {
-  volumeInfo: {
-    title: string;
-    authors: string[];
-    imageLinks: {
-      thumbnail: string;
-    };
-  };
-  id: string;
-};
-
-function computeStartIndex(currentPage: string, maxResults: number) {
-  let startIndex = Number(currentPage) * maxResults - maxResults;
-  return startIndex;
-}
-
-function validateQuery(query: string | null) {
-  return query == null ? "harry potter" : query === "" ? "star wars" : query;
-}
 
 export const loader = async ({ request }: LoaderArgs) => {
   let user = await authenticator.isAuthenticated(request);
@@ -55,7 +36,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 const Books = () => {
   const { user, books, currentPage, query } = useLoaderData();
-  // TODO: search for books (useSubmit for onChange searching)
   // TODO: Refactor to all reusable components
 
   const pagination = {
@@ -89,20 +69,7 @@ const Books = () => {
             exit={{ y: "-10%", opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {books &&
-              books
-                .filter(
-                  (book: Book) =>
-                    book.volumeInfo.imageLinks?.thumbnail !== undefined
-                )
-                .map((book: Book) => (
-                  <BookCard
-                    key={book.id}
-                    title={book.volumeInfo.title}
-                    imageUrl={book.volumeInfo.imageLinks?.thumbnail}
-                    authors={book.volumeInfo.authors}
-                  />
-                ))}
+            <BookGrid books={books} />
           </motion.div>
         </AnimatePresence>
         <div className="flex flex-row gap-4 justify-center mb-5">

@@ -1,10 +1,4 @@
-// TODO: Move type to utils/types.ts
-
-type BookCardProps = {
-  title: string;
-  authors: string[];
-  imageUrl: string;
-};
+import type { BookCardProps } from "~/utils/types";
 
 const BookCard = ({ title, authors, imageUrl }: BookCardProps) => {
   return (
