@@ -1,4 +1,13 @@
-// TODO: Add functions for Google Books requests
+export const getBookDetail = async (bookId: string | undefined) => {
+  try {
+    const data = await fetch(
+      `https://www.googleapis.com/books/v1/volumes/${bookId}`
+    );
+    return await data.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const getBooks = async (
   searchTerm: string | null = "harry potter",

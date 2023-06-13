@@ -1,11 +1,21 @@
-import { Link, useParams } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { LoaderArgs, json } from "@remix-run/node";
+import { getBookDetail } from "~/services/books.server";
+
+export const loader = async ({ params }: LoaderArgs) => {
+  const { bookId } = params;
+  const book = await getBookDetail(bookId);
+  return json({ book });
+};
 
 const BookDetail = () => {
-  const { bookId } = useParams();
+  const { book } = useLoaderData();
   return (
     <div>
-      <p>Book Id: {bookId}</p>
-      <Link to="/books/all">Back to books</Link>
+      <h1>{book.volumeInfo.title}</h1>
+      <Link prefetch="intent" to="/books/all">
+        Back to books
+      </Link>
     </div>
   );
 };
