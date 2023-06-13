@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import BookCard from "./BookCard";
 import type { Book } from "~/utils/types";
 
@@ -13,12 +14,13 @@ const BookGrid = ({ books }: BookGridProps) => {
           (book: Book) => book.volumeInfo.imageLinks?.thumbnail !== undefined
         )
         .map((book: Book) => (
-          <BookCard
-            key={book.id}
-            title={book.volumeInfo.title}
-            imageUrl={book.volumeInfo.imageLinks?.thumbnail}
-            authors={book.volumeInfo.authors}
-          />
+          <Link key={book.id} to={`/books/${book.id}`}>
+            <BookCard
+              title={book.volumeInfo.title}
+              imageUrl={book.volumeInfo.imageLinks?.thumbnail}
+              authors={book.volumeInfo.authors}
+            />
+          </Link>
         ))}
     </>
   );

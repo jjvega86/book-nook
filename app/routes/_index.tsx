@@ -11,7 +11,7 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   await authenticator.isAuthenticated(request, {
-    successRedirect: "/books",
+    successRedirect: "/books/all",
   });
 
   return null;

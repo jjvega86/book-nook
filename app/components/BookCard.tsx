@@ -9,7 +9,7 @@ const BookCard = ({ title, authors, imageUrl }: BookCardProps) => {
         <p className="text-gray-700 mb-4">
           Author(s):{" "}
           {authors ? (
-            authors?.map((author) => <p>{author}</p>)
+            authors?.map((author) => <p key={author}>{author}</p>)
           ) : (
             <p>No Author Listed!</p>
           )}

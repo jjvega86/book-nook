@@ -1,6 +1,6 @@
 import { V2_MetaFunction, json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 
 import authenticator from "~/services/auth.server";
 import { getBooks } from "~/services/books.server";
@@ -37,6 +37,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 const Books = () => {
   const { user, books, currentPage, query } = useLoaderData();
+  const navigation = useNavigation();
 
   return (
     <div>
@@ -45,14 +46,18 @@ const Books = () => {
       </header>
       <main className="mx-20">
         <div className="my-5">
-          <Form>
-            <input
-              className="h-10"
-              type="text"
-              name="query"
-              placeholder="Search for Books"
-            />
-          </Form>
+          {navigation.state === "loading" ? (
+            <p>"Searching..."</p>
+          ) : (
+            <Form>
+              <input
+                className="h-10"
+                type="text"
+                name="query"
+                placeholder="Search for books..."
+              />
+            </Form>
+          )}
         </div>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
