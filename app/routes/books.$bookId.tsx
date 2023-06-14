@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { LoaderArgs, json } from "@remix-run/node";
 import { getBookDetail } from "~/services/books.server";
 
@@ -10,12 +10,11 @@ export const loader = async ({ params }: LoaderArgs) => {
 
 const BookDetail = () => {
   const { book } = useLoaderData();
+  const navigate = useNavigate();
   return (
     <div>
       <h1>{book.volumeInfo.title}</h1>
-      <Link prefetch="intent" to="/books/all">
-        Back to books
-      </Link>
+      <button onClick={() => navigate(-1)}>Go Back</button>
     </div>
   );
 };
