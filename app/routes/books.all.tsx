@@ -8,6 +8,7 @@ import { computeStartIndex, validateQuery } from "~/utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import BookGrid from "~/components/BookGrid";
 import PaginationControls from "~/components/PaginationControls";
+import { useEffect, useRef } from "react";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -35,22 +36,26 @@ export const loader = async ({ request }: LoaderArgs) => {
 const Books = () => {
   const { books, currentPage, query } = useLoaderData();
   const navigation = useNavigation();
+  const loading = navigation.state === "loading";
+
+  let formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    formRef.current?.reset();
+  }, [loading]);
 
   return (
     <div>
       <div className="my-5">
-        {navigation.state === "loading" ? (
-          <p>Searching...</p>
-        ) : (
-          <Form>
-            <input
-              className="h-10"
-              type="text"
-              name="query"
-              placeholder="Search for books..."
-            />
-          </Form>
-        )}
+        <Form ref={formRef}>
+          <input
+            className="h-10"
+            type="text"
+            name="query"
+            placeholder={loading ? "Loading..." : "Search for books..."}
+            disabled={loading}
+          />
+        </Form>
       </div>
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
