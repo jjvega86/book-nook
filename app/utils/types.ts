@@ -15,6 +15,7 @@ export type Book = {
     authors: string[];
     imageLinks: {
       thumbnail: string;
+      smallThumbnail: string;
     };
   };
   id: string;
