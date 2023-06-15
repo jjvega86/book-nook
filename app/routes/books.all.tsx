@@ -1,6 +1,11 @@
 import { V2_MetaFunction, json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
-import { Form, useLoaderData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  useLoaderData,
+  useNavigation,
+  useSubmit,
+} from "@remix-run/react";
 
 import { getBooks } from "~/services/books.server";
 import { computeStartIndex, validateQuery } from "~/utils/helpers";
@@ -36,9 +41,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 const Books = () => {
   const { books, currentPage, query } = useLoaderData();
   const navigation = useNavigation();
-  const loading = navigation.state === "loading";
-
   let formRef = useRef<HTMLFormElement>(null);
+  const submit = useSubmit();
+  const loading = navigation.state === "loading";
 
   useEffect(() => {
     formRef.current?.reset();
@@ -52,8 +57,11 @@ const Books = () => {
             className="h-10"
             type="text"
             name="query"
-            placeholder={loading ? "Loading..." : "Search for books..."}
-            disabled={loading}
+            placeholder="Search for books"
+            defaultValue={query}
+            onChange={(event) => {
+              submit(event.currentTarget.form);
+            }}
           />
         </Form>
       </div>
