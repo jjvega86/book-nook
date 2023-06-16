@@ -1,4 +1,8 @@
-export const getBookDetail = async (bookId: string | undefined) => {
+import type { Book } from "~/utils/types";
+
+export const getBookDetail = async (
+  bookId: string | undefined
+): Promise<Book | undefined> => {
   try {
     const data = await fetch(
       `https://www.googleapis.com/books/v1/volumes/${bookId}`

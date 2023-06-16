@@ -17,6 +17,7 @@ export type Book = {
       thumbnail: string;
       smallThumbnail: string;
     };
+    description: string;
   };
   id: string;
 };

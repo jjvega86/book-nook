@@ -19,7 +19,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Index() {
   // TODO: Finish styling
-  // TODO: Link to Books features that don't require login
   return (
     <div>
       <main>
@@ -30,6 +29,7 @@ export default function Index() {
             Already signed up?{" "}
             <span className="text-blue-600">Login here.</span>
           </Link>
+          <Link to="/books/all">Want to search now? Click here.</Link>
         </div>
       </main>
     </div>
