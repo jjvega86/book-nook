@@ -14,7 +14,11 @@ const BookGrid = ({ books }: BookGridProps) => {
           (book: Book) => book.volumeInfo.imageLinks?.thumbnail !== undefined
         )
         .map((book: Book) => (
-          <Link prefetch="intent" key={book.id} to={`/books/${book.id}`}>
+          <Link
+            prefetch="intent"
+            key={book.id}
+            to={`/books/${book.id}/reviews`}
+          >
             <BookCard
               title={book.volumeInfo.title}
               imageUrl={book.volumeInfo.imageLinks?.thumbnail}

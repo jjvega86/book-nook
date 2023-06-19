@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import { useLoaderData, useNavigate, Outlet } from "@remix-run/react";
 import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
 import { getBookDetail } from "~/services/books.server";
 
@@ -25,17 +25,32 @@ export const loader: LoaderFunction = async ({ params }: LoaderArgs) => {
 const BookDetail = () => {
   const { book } = useLoaderData() as LoaderData;
   const navigate = useNavigate();
+
   return (
-    <div className="max-w-[200px]">
-      <h1>{book?.volumeInfo.title}</h1>
-      <h2>{book?.volumeInfo.authors[0]}</h2>
-      <p>{removeHtmlTags(book?.volumeInfo.description)}</p>
-      <img
-        className="h-48 object-cover max-w-[128px]"
-        src={book?.volumeInfo.imageLinks.thumbnail}
-        alt={book?.volumeInfo.title}
-      />
-      <button onClick={() => navigate(-1)}>Go Back</button>
+    <div className="flex flex-col items-center mt-8 pb-16">
+      <div className="max-w-[800px] p-4 shadow-lg">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">{book?.volumeInfo.title}</h1>
+          <h2 className="text-lg">{book?.volumeInfo.authors[0]}</h2>
+          <p className="mt-2">{removeHtmlTags(book?.volumeInfo.description)}</p>
+        </div>
+        <div className="flex justify-center mt-4">
+          <img
+            className="h-48 object-cover max-w-[128px]"
+            src={book?.volumeInfo.imageLinks.thumbnail}
+            alt={book?.volumeInfo.title}
+          />
+        </div>
+        <Outlet />
+      </div>
+      <div className="w-1/5 mt-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-full bg-gray-300 rounded p-2 hover:bg-gray-200 cursor-pointer"
+        >
+          Go Back
+        </button>
+      </div>
     </div>
   );
 };

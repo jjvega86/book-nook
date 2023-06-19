@@ -29,3 +29,23 @@ export const getBooks = async (
     console.error(error);
   }
 };
+
+export const getBookInfo = async (
+  bookId: string | undefined,
+  token: string | undefined
+) => {
+  try {
+    let response = await fetch(`http://localhost:5500/api/books/${bookId}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

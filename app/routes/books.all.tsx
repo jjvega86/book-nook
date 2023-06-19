@@ -42,7 +42,6 @@ const Books = () => {
   const { books, currentPage, query } = useLoaderData();
   const navigation = useNavigation();
   let formRef = useRef<HTMLFormElement>(null);
-  const submit = useSubmit();
   const loading = navigation.state === "loading";
 
   useEffect(() => {
@@ -58,10 +57,6 @@ const Books = () => {
             type="text"
             name="query"
             placeholder="Search for books"
-            defaultValue={query}
-            onChange={(event) => {
-              submit(event.currentTarget.form);
-            }}
           />
         </Form>
       </div>
