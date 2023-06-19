@@ -17,7 +17,7 @@ const BookGrid = ({ books }: BookGridProps) => {
           <Link
             prefetch="intent"
             key={book.id}
-            to={`/books/${book.id}/reviews`}
+            to={`/books/${book.id}/reviews/all`}
           >
             <BookCard
               title={book.volumeInfo.title}
